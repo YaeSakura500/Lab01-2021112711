@@ -87,30 +87,30 @@ class cul(object):
             return out
 
 
-def Dijkstra(self, s):
-    n = nx.number_of_nodes(self.G)
-    dis = [100000] * n
-    path = [[] for _ in range(n)]  # 添加路径存储
-    vis = set()
-    dis[s] = 0
-    path[s].append(s)  # 路径初始化
-    # priority_queue
-    q = []
-    heapq.heappush(q, (0, s))
-    while q:
-        dis_k, k = heapq.heappop(q)
-        if k in vis:
-            continue
-        vis.add(k)
-        for v in self.G.successors(k):
-            weight = self.G.get_edge_data(k, v)['weight']
-            if dis[v] > dis[k] + weight:
-                dis[v] = dis[k] + weight
-                path[v] = path[k] + [v]  # 更新路径
-            if v not in vis:
-                heapq.heappush(q, (dis[v], v))
-    return dis, path  # 返回距离和路径
-    
+    def Dijkstra(self, s):
+        n = nx.number_of_nodes(self.G)
+        dis = [100000] * n
+        path = [[] for _ in range(n)]  # 添加路径存储
+        vis = set()
+        dis[s] = 0
+        path[s].append(s)  # 路径初始化
+        # priority_queue
+        q = []
+        heapq.heappush(q, (0, s))
+        while q:
+            dis_k, k = heapq.heappop(q)
+            if k in vis:
+                continue
+            vis.add(k)
+            for v in self.G.successors(k):
+                weight = self.G.get_edge_data(k, v)['weight']
+                if dis[v] > dis[k] + weight:
+                    dis[v] = dis[k] + weight
+                    path[v] = path[k] + [v]  # 更新路径
+                if v not in vis:
+                    heapq.heappush(q, (dis[v], v))
+        return dis, path  # 返回距离和路径
+        
 
     # String calcShortestPath(String word1, String word2)：计算两个单词之间的最短路径
     def calcShortestPath(self, word1:str, word2:str):
@@ -121,6 +121,9 @@ def Dijkstra(self, s):
         node1 = self.w2n[Word1]
         node2 = self.w2n[Word2]
         dis, path = self.Dijkstra(node1)
+        for i in range(len(path)):
+            for j in range(len(path[i])):
+                path[i][j]=self.n2m[path[i][j]]
         if word2:
             return dis[node2],path[node2]
         else:
