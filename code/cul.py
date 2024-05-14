@@ -2,7 +2,7 @@ import re
 import networkx as nx
 import numpy as np
 import random
-
+import heapq
 from pyparsing import Word
 
 
@@ -86,10 +86,67 @@ class cul(object):
         finally:
             return out
 
-    # String calcShortestPath(String word1, String word2)：计算两个单词之间的最短路径
-    def calcShortestPath(self, word1: str, word2: str):
-        pass
 
+def Dijkstra(self, s):
+    n = nx.number_of_nodes(self.G)
+    dis = [100000] * n
+    path = [[] for _ in range(n)]  # 添加路径存储
+    vis = set()
+    dis[s] = 0
+    path[s].append(s)  # 路径初始化
+    # priority_queue
+    q = []
+    heapq.heappush(q, (0, s))
+    while q:
+        dis_k, k = heapq.heappop(q)
+        if k in vis:
+            continue
+        vis.add(k)
+        for v in self.G.successors(k):
+            weight = self.G.get_edge_data(k, v)['weight']
+            if dis[v] > dis[k] + weight:
+                dis[v] = dis[k] + weight
+                path[v] = path[k] + [v]  # 更新路径
+            if v not in vis:
+                heapq.heappush(q, (dis[v], v))
+    return dis, path  # 返回距离和路径
+    
+
+    # String calcShortestPath(String word1, String word2)：计算两个单词之间的最短路径
+    def calcShortestPath(self, word1:str, word2:str):
+        Word1 = word1.lower()
+        Word2 = word2.lower()
+        if Word1 not in self.w2n or Word2 not in self.w2n:
+            return 'No word1 or word2 in the graph!'
+        node1 = self.w2n[Word1]
+        node2 = self.w2n[Word2]
+        dis, path = self.Dijkstra(node1)
+        if word2:
+            return dis[node2],path[node2]
+        else:
+            return dis, path
+        
     # String randomWalk()：随机游走
     def randomWalk(self):
-        pass
+        #赋初值
+        nodes = list(self.G.nodes())
+        edges = list(self.G.edges())
+        ans_list = []
+        vis = {edge: 0 for edge in edges}
+        #随机一个点
+        start_node = random.choice(nodes)
+        ans_list.append(self.n2m[start_node])
+        while True:
+            #随机出边
+            out_edges = list(self.G.out_edges(start_node))
+            #没有出边
+            if not out_edges:
+                break
+            random_edge = random.choice(out_edges)
+            start_node = random_edge[1]
+            ans_list.append(self.n2m[start_node])
+            #该边被遍历过一次
+            if vis[random_edge] == 1:
+                break
+            vis[random_edge] = 1
+        return ' '.join(ans_list)
