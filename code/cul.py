@@ -26,11 +26,6 @@ class cul(object):
 
     # String queryBridgeWords(String word1, String word2)：查询桥接词
     def queryBridgeWords(self, word1: str, word2: str):
-        '''
-        :param word1:
-        :param word2:
-        :return:
-        '''
         # turn query words into lower case
         Word1 = word1.lower()
         Word2 = word2.lower()
@@ -113,7 +108,7 @@ class cul(object):
         
 
     # String calcShortestPath(String word1, String word2)：计算两个单词之间的最短路径
-    def calcShortestPath(self, word1:str, word2:str):
+    def calcShortestPath(self, word1:str, word2=''):
         Word1 = word1.lower()
         Word2 = word2.lower()
         if Word1 not in self.w2n or Word2 not in self.w2n:
@@ -124,7 +119,7 @@ class cul(object):
         for i in range(len(path)):
             for j in range(len(path[i])):
                 path[i][j]=self.n2m[path[i][j]]
-        if word2:
+        if word2 !='':
             return dis[node2],path[node2]
         else:
             return dis, path
