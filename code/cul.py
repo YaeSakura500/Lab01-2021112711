@@ -29,7 +29,7 @@ class cul(object):
         # turn query words into lower case
         Word1 = word1.lower()
         Word2 = word2.lower()
-        # Case:Not in the node list 
+        # Case:Not in the node list
         if Word1 not in self.w2n or Word2 not in self.w2n:
             return f'No "{word1}" or "{word2}" in the graph!'
         # init bridge word list
@@ -105,25 +105,32 @@ class cul(object):
                 if v not in vis:
                     heapq.heappush(q, (dis[v], v))
         return dis, path  # 返回距离和路径
-        
 
     # String calcShortestPath(String word1, String word2)：计算两个单词之间的最短路径
-    def calcShortestPath(self, word1:str, word2=''):
-        Word1 = word1.lower()
-        Word2 = word2.lower()
-        if Word1 not in self.w2n or Word2 not in self.w2n:
+    def calcShortestPath(self, *word:str):
+        if len(word) == 1:
+            word1 = word[0].lower()
+            if word1 not in self.w2n:
+                return 'No word1 in the graph!'
+            node1 = self.w2n[word1]
+            dis, path = self.Dijkstra(node1)
+            for i in range(len(path)):
+                for j in range(len(path[i])):
+                    path[i][j] = self.n2m[path[i][j]]
+            return dis, path
+        elif len(word) >= 3:
+            return 'Too many words in the input'
+        word1 = word[0].lower()
+        word2 = word[1].lower()
+        if word1 not in self.w2n or word2 not in self.w2n:
             return 'No word1 or word2 in the graph!'
-        node1 = self.w2n[Word1]
-        node2 = self.w2n[Word2]
+        node1 = self.w2n[word1]
+        node2 = self.w2n[word2]
         dis, path = self.Dijkstra(node1)
         for i in range(len(path)):
             for j in range(len(path[i])):
-                path[i][j]=self.n2m[path[i][j]]
-        if word2 !='':
-            return dis[node2],path[node2]
-        else:
-            return dis, path
-        
+                path[i][j] = self.n2m[path[i][j]]
+        return dis[node2], path[node2]
     # String randomWalk()：随机游走
     def randomWalk(self):
         #赋初值
