@@ -107,7 +107,7 @@ class cul(object):
         return dis, path  # 返回距离和路径
 
     # String calcShortestPath(String word1, String word2)：计算两个单词之间的最短路径
-    def calcShortestPath(self, *word:str):
+    def calcShortestPath(self, word:str):
         if len(word) == 1:
             word1 = word[0].lower()
             if word1 not in self.w2n:
