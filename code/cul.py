@@ -114,10 +114,12 @@ class cul(object):
                 return 'No word1 in the graph!'
             node1 = self.w2n[word1]
             dis, path = self.Dijkstra(node1)
+            out = ''
             for i in range(len(path)):
                 for j in range(len(path[i])):
                     path[i][j] = self.n2m[path[i][j]]
-            return dis, path
+                out += f'Length:{dis[i]}\n' + '>'.join(path[i])+'\n'
+            return out
         elif len(word) >= 3:
             return 'Too many words in the input'
         word1 = word[0].lower()
@@ -130,7 +132,8 @@ class cul(object):
         for i in range(len(path)):
             for j in range(len(path[i])):
                 path[i][j] = self.n2m[path[i][j]]
-        return dis[node2], path[node2]
+        out = f'Length:{dis[node2]}\n' + '>'.join(path[node2])+'\n'
+        return out
     # String randomWalk()：随机游走
     def randomWalk(self):
         #赋初值
