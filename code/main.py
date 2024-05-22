@@ -30,12 +30,12 @@ out2 = mycul.generateNewText(origintext)
 print(out2)
 
 wordlength = input("Please enter One or Two word(s) to calculate distance!\n")
-try:
-    length,path = mycul.calcShortestPath(wordlength.split())
-    print(length,path)
-except:
-    outsentence = mycul.calcShortestPath(wordlength.split())
-    print(outsentence)
+# try:
+#     length,path = mycul.calcShortestPath(wordlength.split())
+#     print(length,path)
+# except:
+outsentence = mycul.calcShortestPath(wordlength.split())
+print(outsentence)
 
 # length,path = mycul.calcShortestPath('to')
 # print(length,path)
