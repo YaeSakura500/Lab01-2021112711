@@ -23,14 +23,21 @@ except:
     word1 = 'new'
     word2 = 'and'
 finally:
-    out = mycul.queryBridgeWords('new', 'and')
+    out = mycul.queryBridgeWords(word1, word2)
 print(out)
 origintext = input("Please enter a sentence:\n")
 out2 = mycul.generateNewText(origintext)
 print(out2)
-length,path = mycul.calcShortestPath('to','and')
-print(length,path)
-length,path = mycul.calcShortestPath('to')
-print(length,path)
+
+wordlength = input("Please enter One or Two word(s) to calculate distance!\n")
+try:
+    length,path = mycul.calcShortestPath(wordlength.split())
+    print(length,path)
+except:
+    outsentence = mycul.calcShortestPath(wordlength.split())
+    print(outsentence)
+
+# length,path = mycul.calcShortestPath('to')
+# print(length,path)
 out4 = mycul.randomWalk()
 print(out4)
