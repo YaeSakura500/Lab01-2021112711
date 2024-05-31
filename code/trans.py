@@ -5,7 +5,7 @@ import networkx as nx
 
 # input:string
 # Output:Adjacency Matrix,word to nodenumber dic,nodenumber to word dic
-def text2matrix(text = "To @ explore strange new worlds,\nTo seek out new life and new civilizations?"):
+def text2matrix(text):
     # turn input to lower case to avoid recongizing A and a as different word
     text = text.lower()
     # delete non-litter item

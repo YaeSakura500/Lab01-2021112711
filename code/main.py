@@ -1,15 +1,20 @@
 import trans
 import cul
 import sys
+import os
 
 
 try:
     argv = sys.argv[1:]
-    if argv != []:
-        sentence = ' '.join(argv)
-        m, w2n, n2w=trans.text2matrix(sentence)
-    else:
-        m, w2n, n2w=trans.text2matrix()
+    try:
+        with open( argv) as f:
+            sentence = f.read()
+    except:
+        if argv != []:
+            sentence = ' '.join(argv)
+        else:
+            sentence = "To @ explore strange new worlds,\nTo seek out new life and new civilizations?"
+    m, w2n, n2w=trans.text2matrix(sentence)
 except:
     m, w2n, n2w=trans.text2matrix()
 G = trans.matrix2graph(n2w, m)
