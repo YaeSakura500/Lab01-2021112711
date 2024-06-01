@@ -4,19 +4,19 @@ import sys
 import os
 
 
-try:
-    argv = sys.argv[1:]
-    try:
-        with open( argv) as f:
-            sentence = f.read()
-    except:
-        if argv != []:
-            sentence = ' '.join(argv)
-        else:
-            sentence = "To @ explore strange new worlds,\nTo seek out new life and new civilizations?"
-    m, w2n, n2w=trans.text2matrix(sentence)
-except:
-    m, w2n, n2w=trans.text2matrix()
+# try:
+argv = sys.argv[1:]
+#     try:
+with open( argv[0]) as f:
+    sentence = f.read()
+    # except:
+    #     if argv != []:
+    #         sentence = ' '.join(argv)
+    #     else:
+    #         sentence = "To @ explore strange new worlds,\nTo seek out new life and new civilizations?"
+m, w2n, n2w=trans.text2matrix(sentence)
+# except:
+#     m, w2n, n2w=trans.text2matrix()
 G = trans.matrix2graph(n2w, m)
 trans.showDirectedGraph(G)
 mycul = cul.cul(G, m, w2n, n2w)
