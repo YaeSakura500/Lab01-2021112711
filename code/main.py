@@ -7,7 +7,7 @@ import os
 # try:
 argv = sys.argv[1:]
 #     try:
-with open( argv[0]) as f:
+with open(argv[0]) as f:
     sentence = f.read()
     # except:
     #     if argv != []:
