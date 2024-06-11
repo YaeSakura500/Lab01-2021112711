@@ -1,47 +1,42 @@
+import unittest
+from cul import cul
 import trans
-import cul
-import sys
-import os
 
-# try:
-argv = sys.argv[1:]
-#     try:
-with open(argv[0]) as f:
-    sentence = f.read()
-    # except:
-    #     if argv != []:
-    #         sentence = ' '.join(argv)
-    #     else:
-    #         sentence = "To @ explore strange new worlds,\nTo seek out new life and new civilizations?"
-m, w2n, n2w = trans.text2matrix(sentence)
-# except:
-#     m, w2n, n2w=trans.text2matrix()
-G = trans.matrix2graph(n2w, m)
-trans.showDirectedGraph(G)
-mycul = cul.cul(G, m, w2n, n2w)
-bridge = input('please enter two word to get word brideg\n')
-try:
-    word1, word2 = bridge.split()
-except:
-    print('wrong Input!\nUse Default input:"new" and "and"')
-    word1 = 'new'
-    word2 = 'and'
-finally:
-    out = mycul.queryBridgeWords(word1, word2)
-print(out)
-origintext = input("Please enter a sentence:\n")
-out2 = mycul.generateNewText(origintext)
-print(out2)
 
-wordlength = input("Please enter One or Two word(s) to calculate distance!\n")
-# try:
-#     length,path = mycul.calcShortestPath(wordlength.split())
-#     print(length,path)
-# except:
-outsentence = mycul.calcShortestPath(wordlength.split())
-print(outsentence)
+class TestCalcShortestPath(unittest.TestCase):
+    def setUp(self):
+        # 初始化类实例
+        sentence = 'To @ explore strange new worlds,\nTo seek out new life and new civilizations?.'
+        m, w2n, n2w = trans.text2matrix(sentence)
+        G = trans.matrix2graph(n2w, m)
+        self.mycul = cul(G, m, w2n, n2w)
 
-# length,path = mycul.calcShortestPath('to')
-# print(length,path)
-out4 = mycul.randomWalk()
-print(out4)
+    def test_single_word(self):
+        # 测试单个单词的情况
+        # self.assertIsInstance(self.mycul.calc_shortest_path(['to']), str)
+        self.assertEqual(self.mycul.calc_shortest_path(['to']),
+                         'Length:1\nto>seek\nLength:4\nto>seek>out>new>worlds\nLength:2\nto>seek>out\nLength:4\nto>seek>out>new>civilizations\nLength:1\nto>explore\nLength:3\nto>seek>out>new\nLength:0\nto\nLength:4\nto>seek>out>new>life\nLength:5\nto>seek>out>new>life>and\nLength:2\nto>explore>strange')
+
+    def test_two_words(self):
+        # 测试两个单词的情况
+        self.assertEqual(self.mycul.calc_shortest_path(['explore', 'strange']), 'Length:1\nexplore>strange\n')
+
+    def test_no_word_in_graph(self):
+        # 测试图中不存在的单词
+        self.assertEqual(self.mycul.calc_shortest_path(['ababa']), 'No word1 in the graph!')
+
+    def test_too_many_words(self):
+        # 测试输入超过两个单词的情况
+        self.assertEqual(self.mycul.calc_shortest_path(['To', 'life', 'and']), 'Too many words in the input')
+
+    def test_no_word1_or_word2_in_graph(self):
+        # 测试图中不存在的两个单词
+        self.assertEqual(self.mycul.calc_shortest_path(['ababa', 'aaaaaaa']), 'No word1 or word2 in the graph!')
+
+    def test_no_input(self):
+        # 测试图中不存在的两个单词
+        self.assertEqual(self.mycul.calc_shortest_path([]), 'Invalid input')
+
+
+if __name__ == '__main__':
+    unittest.main()
